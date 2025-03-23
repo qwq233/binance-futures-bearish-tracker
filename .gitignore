@@ -1,0 +1,34 @@
+# Deno 相关
+.deno/
+deno.lock
+
+# 回测数据
+data/backtest/
+
+# 系统文件
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 编辑器文件
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+*.swp
+*.swo
+*~
+
+# 环境变量和私密信息
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# 日志
+*.log
+
+# 临时文件
+tmp/
+temp/ 

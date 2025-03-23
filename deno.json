@@ -1,0 +1,13 @@
+{
+  "tasks": {
+    "dev": "deno run --watch -A src/index.ts",
+    "start": "deno run -A src/index.ts --mode=monitor",
+    "backtest": "deno run -A src/index.ts --mode=backtest --start-date=2025-01-01",
+    "example": "deno run -A examples/simple_monitor.ts"
+  },
+  "imports": {
+    "@std/fs": "jsr:@std/fs@^1",
+    "@std/datetime": "jsr:@std/datetime@^0",
+    "@std/cli": "jsr:@std/cli@^1"
+  }
+}
