@@ -85,7 +85,7 @@ export function analyzeSymbol(
 
   // 1. RSI 超买信号
   if (rsi[lastIndex] > 70) {
-    const strength = Math.min(100, (rsi[lastIndex] - 70) * 3.33);
+    const strength = Math.min(100, (rsi[lastIndex] - 70) * 2.5);
     signals.push({
       name: 'RSI 超买',
       description: `RSI(14) = ${rsi[lastIndex].toFixed(2)}，超过 70 的超买区域`,
@@ -99,7 +99,7 @@ export function analyzeSymbol(
     (lastCandle.close - middle[lastIndex]) /
     (upper[lastIndex] - middle[lastIndex]);
   if (priceToUpperRatio > 0.8) {
-    const strength = Math.min(50, priceToUpperRatio * 50);
+    const strength = Math.min(50, priceToUpperRatio * 40);
     signals.push({
       name: '接近布林带上轨',
       description: `价格处于布林带上方 ${(priceToUpperRatio * 100).toFixed(
@@ -131,9 +131,9 @@ export function analyzeSymbol(
     signals.push({
       name: '均线死叉',
       description: '20 日均线下穿 50 日均线，形成死叉',
-      strength: 85,
+      strength: 70,
     });
-    totalWeight += 85;
+    totalWeight += 70;
   }
 
   // 5. 价格跌破重要支撑位 (MA200)
@@ -167,15 +167,23 @@ export function analyzeSymbol(
     // 定义所有可能的信号总数（当前有6种信号）
     const TOTAL_POSSIBLE_SIGNALS = 6;
 
-    // 基础概率 = 检测到的信号数量 / 可能的信号总数
-    let baseProb = (signals.length / TOTAL_POSSIBLE_SIGNALS) * 100;
+    // 计算信号强度加权平均
+    const avgStrength = totalWeight / signals.length;
 
-    // 根据信号强度调整基础概率（每个信号的强度越高，额外概率越高）
-    // 但调整幅度有限，保证主要还是由信号数量决定
-    let strengthAdjustment = (totalWeight / (signals.length * 100)) * 10;
+    // 基础概率 = 信号数量 * 信号强度加权平均 * 2
+    // 乘以 2 是为了提高基础概率的范围
+    let baseProb = (signals.length / TOTAL_POSSIBLE_SIGNALS) * avgStrength * 2;
 
-    // 最终概率 = 基础概率 + 强度调整
-    result.probability = Math.min(100, baseProb + strengthAdjustment);
+    // 根据信号数量增加额外概率
+    // 当有多个信号时，增加额外概率以反映信号叠加效应
+    let signalCountBonus = 0;
+    if (signals.length >= 2) {
+      // 每多一个信号增加 15% 概率，但最多增加 30%
+      signalCountBonus = Math.min(30, (signals.length - 1) * 15);
+    }
+
+    // 最终概率 = 基础概率 + 信号数量奖励
+    result.probability = Math.min(100, baseProb + signalCountBonus);
 
     result.signals = signals;
     logInfo(

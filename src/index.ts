@@ -143,9 +143,9 @@ export async function startMonitoring(
           trackedSymbol.highestPrice) *
         100;
 
-      // 检查是否上涨乏力（根据技术指标和价格没有创新高）
+      // 检查是否上涨乏力（根据技术指标的反转概率决定）
       if (
-        result.probability > 70 &&
+        result.probability > 60 &&
         trackedSymbol.lastPrice < trackedSymbol.highestPrice &&
         !trackedSymbol.downtrend
       ) {
