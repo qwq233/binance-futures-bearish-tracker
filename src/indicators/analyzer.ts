@@ -99,7 +99,7 @@ export function analyzeSymbol(
     (lastCandle.close - middle[lastIndex]) /
     (upper[lastIndex] - middle[lastIndex]);
   if (priceToUpperRatio > 0.8) {
-    const strength = Math.min(100, priceToUpperRatio * 100);
+    const strength = Math.min(50, priceToUpperRatio * 50);
     signals.push({
       name: '接近布林带上轨',
       description: `价格处于布林带上方 ${(priceToUpperRatio * 100).toFixed(
