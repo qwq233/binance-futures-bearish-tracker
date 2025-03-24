@@ -164,16 +164,18 @@ export function analyzeSymbol(
 
   // 计算反转概率
   if (signals.length > 0) {
-    // 基于信号数量和强度计算概率
-    result.probability = Math.min(
-      100,
-      (totalWeight / (signals.length * 100)) * 100
-    );
+    // 定义所有可能的信号总数（当前有6种信号）
+    const TOTAL_POSSIBLE_SIGNALS = 6;
 
-    if (signals.length >= 2) {
-      // 多重信号共振，提高概率
-      result.probability = Math.min(100, result.probability * 1.2);
-    }
+    // 基础概率 = 检测到的信号数量 / 可能的信号总数
+    let baseProb = (signals.length / TOTAL_POSSIBLE_SIGNALS) * 100;
+
+    // 根据信号强度调整基础概率（每个信号的强度越高，额外概率越高）
+    // 但调整幅度有限，保证主要还是由信号数量决定
+    let strengthAdjustment = (totalWeight / (signals.length * 100)) * 10;
+
+    // 最终概率 = 基础概率 + 强度调整
+    result.probability = Math.min(100, baseProb + strengthAdjustment);
 
     result.signals = signals;
     logInfo(

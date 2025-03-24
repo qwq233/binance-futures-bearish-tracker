@@ -48,7 +48,7 @@ const trackedSymbols = new Map<
  * 5. 发送警报通知
  */
 export async function startMonitoring(
-  limit = 20,
+  limit = 50,
   interval = '1h'
 ): Promise<void> {
   logInfo('开始监控币安合约市场涨幅榜...');

@@ -19,10 +19,10 @@ const BINANCE_API_BASE = 'https://fapi.binance.com';
 /**
  * 获取币安合约市场涨幅榜
  *
- * @param limit 返回的币种数量，默认为 20
+ * @param limit 返回的币种数量，默认为 50
  * @returns 涨幅榜币种信息
  */
-export async function fetchGainersList(limit = 20): Promise<GainerInfo[]> {
+export async function fetchGainersList(limit = 50): Promise<GainerInfo[]> {
   try {
     // 获取所有合约交易对 24 小时 ticker 数据
     const response = await fetch(`${BINANCE_API_BASE}/fapi/v1/ticker/24hr`);
@@ -148,7 +148,7 @@ export async function fetchMultiTimeframeData(
  */
 export async function fetchHistoricalGainers(
   date: string,
-  limit = 20
+  limit = 50
 ): Promise<GainerInfo[]> {
   try {
     logInfo(`获取 ${date} 的历史涨幅榜数据...`);
